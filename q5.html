@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Weather App</title>
+    <style>
+        * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+          font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+          background: linear-gradient(to right, #a1c4fd, #c2e9fb);
+          padding: 2rem;
+          color: #333;
+          transition: background 0.5s;
+        }
+
+        .dark-theme {
+          background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+          color: white;
+        }
+
+        .container {
+          max-width: 800px;
+          margin: auto;
+          background: white;
+          border-radius: 15px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+          padding: 2rem;
+          transition: background 0.5s, color 0.5s;
+        }
+
+        .dark-theme .container {
+          background: #1e1e1e;
+          color: white;
+        }
+
+        .header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 2rem;
+        }
+
+        .header h1 {
+          font-size: 1.5rem;
+        }
+
+        .search-input input {
+          padding: 0.5rem 1rem;
+          font-size: 1rem;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+        }
+
+        .weather-details {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          background-color: #f0f8ff;
+          padding: 1.5rem;
+          border-radius: 12px;
+          margin-bottom: 2rem;
+        }
+
+        .dark-theme .weather-details {
+          background-color: #2a2a2a;
+        }
+
+        .weather-main {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+        }
+
+        .weather-main img {
+          width: 60px;
+          height: 60px;
+        }
+
+        .temp {
+          font-size: 2.5rem;
+          font-weight: bold;
+        }
+
+        .description {
+          text-transform: capitalize;
+          color: #555;
+        }
+
+        .dark-theme .description {
+          color: #ccc;
+        }
+
+        .details {
+          text-align: right;
+        }
+
+        .forecast {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+          gap: 1rem;
+        }
+
+        .forecast-day {
+          background: #f8fbff;
+          padding: 1rem;
+          border-radius: 10px;
+          text-align: center;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .dark-theme .forecast-day {
+          background: #333;
+        }
+
+        .forecast-day img {
+          width: 50px;
+          height: 50px;
+          margin-bottom: 0.5rem;
+        }
+
+        .forecast-day h4 {
+          margin-bottom: 0.3rem;
+          font-size: 1rem;
+        }
+
+        .forecast-day p {
+          font-size: 0.9rem;
+          color: #444;
+        }
+
+        .dark-theme .forecast-day p {
+          color: #ddd;
+        }
+
+        .top-bar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 1rem;
+        }
+
+        .theme-toggle {
+          cursor: pointer;
+          background-color: #333;
+          color: #fff;
+          border: none;
+          padding: 0.5rem 1rem;
+          border-radius: 8px;
+          transition: background 0.3s;
+        }
+
+        .theme-toggle:hover {
+          background-color: #555;
+        }
+
+        .clock {
+          font-size: 1rem;
+          font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Top Bar: Theme Toggle + Clock -->
+    <div class="top-bar">
+        <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+        <div class="clock" id="clock">--:--:--</div>
+    </div>
+
+    <!-- Header with city and input -->
+    <div class="header">
+        <h1 id="city-name">Weather in Bhubaneswar</h1>
+        <div class="search-input">
+            <input type="text" id="city-input" placeholder="Enter city..." onkeydown="updateCity(event)" />
+        </div>
+    </div>
+
+    <!-- Main weather details -->
+    <div class="weather-details">
+        <div class="weather-main">
+            <img src="https://cdn-icons-png.flaticon.com/512/3845/3845731.png" alt="Weather icon" />
+            <div>
+                <div class="temp" id="temperature">29°C</div>
+                <div class="description">Sunny</div>
+            </div>
+        </div>
+        <div class="details">
+            <p>Humidity: 60%</p>
+            <p>Wind: 15 km/h</p>
+        </div>
+    </div>
+
+    <!-- Forecast grid -->
+    <div class="forecast">
+        <div class="forecast-day">
+            <h4>Mon</h4>
+            <img src="https://cdn-icons-png.flaticon.com/512/3845/3845731.png" alt="Weather icon" />
+            <p>28°C</p>
+            <p>Clear</p>
+        </div>
+        <div class="forecast-day">
+            <h4>Tue</h4>
+            <img src="https://cdn-icons-png.flaticon.com/512/3845/3845731.png" alt="Weather icon" />
+            <p>27°C</p>
+            <p>Cloudy</p>
+        </div>
+        <div class="forecast-day">
+            <h4>Wed</h4>
+            <img src="https://cdn-icons-png.flaticon.com/512/3845/3845731.png" alt="Weather icon" />
+            <p>30°C</p>
+            <p>Sunny</p>
+        </div>
+        <div class="forecast-day">
+            <h4>Thu</h4>
+            <img src="https://cdn-icons-png.flaticon.com/512/3845/3845731.png" alt="Weather icon" />
+            <p>26°C</p>
+            <p>Rain</p>
+        </div>
+        <div class="forecast-day">
+            <h4>Fri</h4>
+            <img src="https://cdn-icons-png.flaticon.com/512/3845/3845731.png" alt="Weather icon" />
+            <p>25°C</p>
+            <p>Storm</p>
+        </div>
+    </div>
+
+</div>
+
+<!-- JavaScript -->
+<script>
+    // Theme toggle
+    function toggleTheme() {
+      document.body.classList.toggle("dark-theme");
+    }
+
+    // Live Clock
+    function updateClock() {
+      const clock = document.getElementById("clock");
+      const now = new Date();
+      clock.textContent = now.toLocaleTimeString();
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Update city name from input
+    function updateCity(event) {
+      if (event.key === "Enter") {
+        const input = document.getElementById("city-input");
+        const cityName = document.getElementById("city-name");
+        if (input.value.trim() !== "") {
+          cityName.textContent = `Weather in ${input.value}`;
+          input.value = "";
+        }
+      }
+    }
+</script>
+
+</body>
+</html>
